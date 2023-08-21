@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /polls/{pollName} {
+      allow read, update, write: if true;
+    }
+
+    match /contacts/{contactName} {
+      allow write: if true;
+      // allow read, update: if request.auth != null;
+      allow update: if request.auth != null;
+      allow read: if (request.auth.uid == resource.id) || (request.auth.token.email == 'daniel.govan@gmail.com')
+    }
+  }
+}
+
+// change this so you can read your own data
+// and add so I can read any data
